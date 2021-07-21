@@ -1,0 +1,1022 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang3082\deflangfe3082{\fonttbl{\f0\fswiss\fprq2\fcharset0 Verdana;}{\f1\fmodern\fprq1\fcharset0 Courier New;}{\f2\froman\fprq2\fcharset0 Times New Roman;}{\f3\fnil\fcharset2 Symbol;}}
+{\colortbl ;\red51\green51\blue153;\red0\green0\blue255;}
+{\stylesheet{ Normal;}{\s1 heading 1;}}
+{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+\pard\nowidctlpar\qc\b\f0\fs20\lang2057 All common knowledge about\par
+\fs40 HEX-EDITING\par
+SAVED GAMES\par
+\fs20 and more\par
+\b0\par
+\b\fs24 Version 1.8\par
+\b0\i\fs20 Last updated 16 April 2005\par
+\i0\par
+By various authors (see Credits)\par
+\par
+This text may be copied freely without permission.\par
+All information has been edited and combined by\par
+Allard H.S. H\'f6felt, \i ahofelt@hotmail.com\i0 .\par
+\par
+Latest version edited by Jorrit Vermeiren, \i jorrit_v@hotmail.com\i0 .\par
+\par
+This file was originally written specifically for use with Fantastic Worlds, an add-on\par
+disk for Civilization II. Some information for the other versions has also been added since then. Most information, apart from some offsets, will be about the same with files saved under other versions. Especially with Civilization II: Test of Time the offsets are greatly different, but still the structure is still more or less the same.\par
+
+\pard\nowidctlpar\par
+\par
+\b Contents of this document:\par
+\b0\par
+
+\pard\nowidctlpar\tqr\tldot\tx9629\lang1033 1. Layout of a Saved Game\par
+2. Start of a Saved Game\par
+3. Tribes\par
+4. Technologies & Money\par
+5. Map Information\par
+6. Units Information\par
+7. Cities Information\par
+8. Built Cities Information & More\par
+9. Passwords\par
+10. Events\par
+A. How to Hex-Edit\par
+B. Version History\par
+C. Credits\par
+
+\pard\nowidctlpar\lang2057\par
+\par
+\par
+\par
+
+\pard\keepn\nowidctlpar\s1\sb240\sa60\kerning28\fs28 1. LAYOUT OF A SAVED GAME\par
+
+\pard\nowidctlpar\kerning0\fs20\par
+Hex offsets are given here, for as long as the values are fixed.\par
+From the map data block 1 onwards, the saved game values are no longer fixed.\par
+\par
+The offsets here are for FW, but the structure remains the same in all versions of Civ2.\par
+\par
+The offsets are given in \b decimals\b0 .\par
+\par
+
+\pard\nowidctlpar\fi-2130\li2130 0 - 321\tab\tab toggled options, various player settings and other general game, technology and wonder information\par
+322 - 583\tab\tab unidentified or empty\par
+584 - 2277\tab\tab 7 blocks of each F2 bytes long with city style information, leader and tribe names for all 7 civs.\par
+2278 - 13701\tab\tab 8 blocks of each 593 (in hex) bytes long with various information, like money and techs (a lot still unidentified) for all 8 civs (incl. barbarians).\par
+13702 - 13716\tab map header information (7 bytes)\par
+  ...\tab\tab\tab map data block 1 (7 * height * width bytes)\par
+  ...\tab\tab\tab map data block 2 (6 * width * height bytes)\par
+  ...\tab\tab\tab map data block 3 (2 * quarterwidth * quarterheight bytes)\par
+  ...\tab\tab\tab 1024 unidentified bytes\par
+  ...\tab\tab\tab unit information (26 * number of units bytes)\par
+  ...\tab\tab\tab city information (84 * number of units bytes)\par
+  ...\tab\tab\tab 3 bytes for all 21 civs containing info as which city in CITIES.TXT to pick\par
+  ...\tab\tab\tab unidentified, and other info such as where the screen is centred or the cursor is located.\par
+  ...\tab\tab\tab a bit of text on how the scenario is called, and a bit of history (who's wiped out when, etc.).\par
+  ...\tab\tab\tab event stuff (starts with EVNT, easy to find).\par
+
+\pard\nowidctlpar\par
+(In MGE a unit entry is 32 bytes long versus 26 for earlier versions and city entry is 88 bytes long versus 84 for earlier versions.)\par
+\par
+\par
+\par
+
+\pard\keepn\nowidctlpar\s1\sb240\sa60\kerning28\fs28 2. START OF SAVED GAME FILE\kerning0\fs20\par
+
+\pard\nowidctlpar\par
+
+\pard\nowidctlpar\fi-1080\li1080\tx1080 0-8\tab "CIVILIZE" and one empty byte (00)\par
+9\tab 1A, unknown origin, but does not seem to do anything\par
+10-11\tab 27 00 : Conflicts in Civilization or lower\par
+
+\pard\nowidctlpar\li1080\tx1080 28 00 : Fantastic Worlds\par
+2C 00 : Multiplayer (MGE/UCC) patch 1.3\par
+31 00 : Test of Time 1.0\par
+32 00 : Test of Time 1.1\par
+
+\pard\nowidctlpar\fi-1080\li1080\tx1080 12\tab 1... ....\tab toggles:  bloodlust\par
+
+\pard\nowidctlpar\li1080\tx1080 ...1 ....\tab simplified combat\par
+
+\pard\nowidctlpar\fi-1080\li1080\tx1080 13\tab 1... ....\tab flat/round world\par
+
+\pard\nowidctlpar\li1080\tx1080 .... ...1\tab don't restart if eliminated\par
+
+\pard\nowidctlpar\fi-1080\li1080\tx1080 14\tab 1... ....\tab move units without mouse\par
+
+\pard\nowidctlpar\li1080\tx1080 .1.. ....\tab enter closes city screen\par
+..1. ....\tab map grid\par
+...1 ....\tab sound effects\par
+.... 1...\tab music\par
+
+\pard\nowidctlpar\fi-1080\li1080\tx1080 15\tab 1... ....\tab cheat menu (also see 20)\par
+
+\pard\nowidctlpar\li1080\tx1080 .1.. ....\tab always wait at end of turn\par
+..1. ....\tab autosave each turn\par
+...1 ....\tab show enemy moves\par
+.... 1...\tab no pause after enemy moves\par
+.... .1..\tab fast piece slide\par
+.... ..1.\tab instant advice\par
+.... ...1\tab tutorial help\par
+
+\pard\nowidctlpar\fi-1080\li1080\tx1080 16\tab ..1. ....\tab animated heralds\par
+
+\pard\nowidctlpar\li1080\tx1080 ...1 ....\tab High Council\par
+.... 1...\tab civilopedia for advances\par
+.... .1..\tab throne room graphics\par
+.... ..1.\tab diplomacy screen graphics\par
+.... ...1\tab wonder movies\par
+
+\pard\nowidctlpar\fi-1080\li1080\tx1080 20\tab 1... ....\tab toggle scenario flag, don't limit researchable techs\par
+
+\pard\nowidctlpar\li1080\tx1080 .1.. ....\tab scenario file (no effect really)\par
+...1 ....\tab cheat penalty/warning\par
+
+\pard\nowidctlpar\fi-1080\li1080\tx1080 22\tab 1... ....\tab announce "we love the king day"\par
+
+\pard\nowidctlpar\li1080\tx1080 .1.. ....\tab warn when food dangerously low\par
+..1. ....\tab announce cities in disorder\par
+...1 ....\tab announce order restored in city\par
+.... 1...\tab show non-combat units built\par
+.... .1..\tab show invalid build instructions\par
+.... ..1.\tab warn when city growth halted\par
+.... ...1\tab show city improvements built\par
+
+\pard\nowidctlpar\fi-1080\li1080\tx1080 23\tab .... .1..\tab zoom to city not default action\par
+
+\pard\nowidctlpar\li1080\tx1080 .... ..1.\tab warn when new pollution occurs\par
+.... ...1\tab warn when changing production will cost shields\par
+
+\pard\nowidctlpar\fi-1080\li1080\tx1080 28-29\tab number of turns passed\par
+30-31\tab number of turns passed to calculate game year in pop-ups, status bar, etc.\par
+34-35\tab specifies which unit is selected at start of the game (you can find the unit id number by playing another civ, revealing the map and right clicking on the unit. On the right, the id is shown between parentheses)\par
+39\tab changes which human player is used\par
+40\tab player's map which is used\par
+41\tab player's civilization number used\par
+42\tab changes with map used. Sometimes FF\par
+43\tab map revealed or not\par
+44\tab difficulty level [deity=5, emperor=4, etc.]\par
+45\tab barbarian activity\par
+
+\pard\nowidctlpar\tx1080 46\tab enumeration of all civs still in play. \i (read binary from right to left)\i0\par
+
+\pard\nowidctlpar\li1080\tx1080 E.g. 1001 1101 means: barbarians and civs 2, 3, 4 and 7 are alive.\par
+
+\pard\nowidctlpar\fi-1080\li1080\tx1080 47\tab human player played (can be more than one). toggling this byte is great and allows Hotseat mode in FW!!! \i (read binary from right to left)\i0\par
+
+\pard\nowidctlpar\li1080\tx1080 eg. 0010 0110 means: human is playing as civ 1, 2 and 5.\par
+
+\pard\nowidctlpar\fi-1080\li1080\tx1080 50\tab amount of current pollution. 7F is maximum, and will certainly cause global temperature rising at the end of the turn. A value of 80 till FF is a negative amount (still shows the icon for global rising), but it will be reset to 00 at the end of the turn.\par
+51\tab amount of times that a global temperature rising has been happening this far in the game. 7F is maximum and will make the whole world a big swamp when the next global temperature rising occurs. 80 or higher will prevent any global rising from happening at all.\par
+
+\pard\nowidctlpar\li1080\tx1080 At the moment when terrain should be changed, nothing happens, and byte 32 is restored to 00, though a message still pops up. Byte 33 will remain at what it was, so it is not reset.\par
+This is a fool-proof way to switch off pollution without the restrictions of the normal cheat-menu switching off of pollution. The message "global warming occurs/will occur soon" of course will need to be changed.\par
+
+\pard\nowidctlpar\fi-1080\li1080\tx1080 56\tab number of turns of peace (counts only after 200th turn)\par
+58-59\tab Total number of units in units list. Probably not necessarily the exact amount of units, as some spaces in the list can be empty, after the unit is destroyed. Lowering this will remove the most recently built units. Making it higher will produce very strange results, because the game will read the saved game file incorrectly.\par
+60-61\tab Total number of cities in city list. Probably not necessarily the exact amount of cities, as some spaces in the list can be empty, after the city is destroyed. Lowering this will remove the most recently built cities. Making it higher will produce very strange results, because the game will read the saved game file incorrectly.\par
+66-165\tab For each of the 100 advances the number of the civilization (1 for the white civs, 2 for the green civs etc.) that first disovered it.\par
+166-265\tab For each of the 100 advances an enumeration of all the civs that have discovered it \i (read binary from right to left)\i0 .\par
+
+\pard\nowidctlpar\li1080\tx1080 E.g. 0001 0010 means: civs 1 and 4 have discovered the technology.\par
+
+\pard\nowidctlpar\fi-1080\li1080\tx1080 266-321\tab All 28 wonders have 2 bytes of information for them, so in total the block for all wonders is 56 bytes long:\par
+
+\pard\nowidctlpar\tx1080\tab FF FF\tab The wonder has not yet been built.\par
+\tab EF FF\tab The wonder is destroyed (city where it stood is not stored).\par
+\tab otherwise the number is the city ID number. 00 00 the first city built, etc.\par
+
+\pard\nowidctlpar\par
+\par
+\par
+
+\pard\keepn\nowidctlpar\s1\sb240\sa60\kerning28\fs28 3. TRIBES\par
+
+\pard\nowidctlpar\kerning0\fs20\par
+The information is stored in 7 blocks (\b\i not \b0\i0 for barbarians), each 242 bytes long.\par
+The blocks start and end at:\par
+
+\pard\nowidctlpar\qj 584-825\tab 1\super st\nosupersub  block\par
+826-1067\tab 2\super nd \nosupersub   "\tab\tab (numbers given in \b decimals\b0 )\par
+1068-1309\tab 3\super rd\nosupersub    "\par
+1310-1551\tab 4\super th\nosupersub    "\par
+1552-1793\tab 5\super th\nosupersub    "\par
+1794-2035\tab 6\super th\nosupersub    "\par
+2036-2277\tab 7\super th\nosupersub    "\par
+
+\pard\nowidctlpar\par
+These 7 blocks are all filled with 00's except for a few names and numbers.\par
+Counting the city style as the first byte (also the first byte in the block), the\par
+blocks are divided as:\par
+\par
+
+\pard\nowidctlpar\fi-1440\li1440 1\super st\nosupersub  byte\tab city style (can be any style, also industrial and modern or even higher (strange effects), without the required advances. Just fill in 00, 01, 02\'85.)\par
+
+\pard\nowidctlpar 3-25\tab\tab Leader name. Empty letters "00".\par
+27-49\tab\tab Tribe name.\par
+51-73\tab\tab Tribe name adjective.\par
+75-97\tab\tab Leader title 1 (Anarchy)\par
+99-121\tab\tab Leader title 2 (Despotism)\par
+123-145\tab Leader title 3 (Monarchy)\par
+147-169\tab Leader title 4 (Communism)\par
+171-193\tab Leader title 5 (Fundamentalism)\par
+195-217\tab Leader title 6 (Republic)\par
+219-241\tab Leader title 7 (Democracy)\par
+\par
+\par
+\par
+
+\pard\keepn\nowidctlpar\s1\sb240\sa60\kerning28\fs28 4. TECHNOLOGIES & MONEY\par
+
+\pard\nowidctlpar\kerning0\fs20\par
+Byte 2278 until 13701 is divided in 8 similar blocks of each 1428 bytes. Each of these blocks contains information specific for each civ, such as technologies and money. A lot more in these blocks has as yet not been identified.\par
+\par
+The blocks all start at these offset bytes:\par
+Block of\tab 0\super th\nosupersub  civ: 2278 - 3705 (barbarians)\par
+ "\tab\tab 1\super st\nosupersub  civ: 3706 - 5133\par
+ "\tab\tab 2\super nd\nosupersub  civ: 5134 - 6561\par
+ "\tab\tab 3\super rd\nosupersub  civ: 6562 - 7989\tab\tab (offsets given in \b decimals\b0 )\par
+ "\tab\tab 4\super th\nosupersub  civ: 7990 - 9417\par
+ "\tab\tab 5\super th\nosupersub  civ: 9418 - 10845\par
+ "\tab\tab 6\super th\nosupersub  civ: 10846 - 12273\par
+ "\tab\tab 7\super th\nosupersub  civ: 12274 - 13701\par
+\par
+Counted from the start of each block as byte 1:\par
+\par
+
+\pard\nowidctlpar\fi-1080\li1080\tx1080 1\tab A byte to control some things about oedo years, anarchy and free techs (I don\rquote t understand them very good yet):\par
+
+\pard\nowidctlpar\li1080\tx1080 .... ...1\tab Skip next oedo year (e.g. used when falling in anarchy)\par
+
+\pard\li1080\tx1080 .... ..1.\tab Civ is at war with other civ? Used for peace turns calculation?\par
+.... .1..\tab Related to anarchy? On at the start of some games...\par
+.... 1...\tab Civ has just recovered from revolution (allow government change)\par
+..1. ....\tab Free advance (used for Philosophy), cleared when received\par
+
+\pard\nowidctlpar\fi-1080\li1080\tx1080 2\tab Gender. Male=00 Female=02 (I\rquote m not sure if it works in MGE!)\par
+3-6\tab Money. The barbarians' money is also changeable. Any value higher than 32,000 will be automatically changed back to 30,000 by Civ2 (Julius Brenzaida's No Limits patches fix that).\par
+7\tab What civ number (as determined in RULES.TXT) is in play here. Can be a civ of the same colour for more than one civ in play, or even the same civ. You can for example make 7 players Romans, with the same colour, portrait, flag, etc.\i\par
+\i0 8\tab It\rquote s also related to the civ you\rquote re playing with. Putting a value bigger than 0 in this byte will cause you to play with a civ whose name and parameters are read from LABELS.TXT or MENU.TXT and with a colour that is not a standard civ2 playable color (red, a different green from Babylonian, Japanese and Zulu green, etc.) \par
+9-10\tab Research progress. Also updates the colour of research indicator in status bar on the right.\par
+11\tab Tech which is being researched. FF if cleared or no goal.\par
+12\tab This byte is also related to technologies. It must be FF if the tech is cleared, otherwise the game could crash; if not, it should be 0. For some values of byte 11, for instance 0, putting a value of 1E,20 or something like that in this byte put the tech researched to \lquote <nil>\rquote , \rquote B.C\rquote , \rquote City resources\rquote  or other string of LABELS.TXT... No, adding technologies is not possible!\par
+13-14\tab ?? does change. At the start of a game, it contains the column where the settler(s) of this civ have appeared (maybe it is used when you destroy a civ to select the start position of the reappearing civ??).\par
+15-16\tab ?? does change. It changes when you build a city, but not always.\par
+
+\pard\fi-1080\li1080\tx1080 17\tab The number of acquired techs + 1\i  \i0 (starting techs are not included).\par
+
+\pard\li1080\tx1080\i NOTE: This value controls how many beakers the next discovery costs and it is also very important for the AI, that can love you or hate you, according to this value, because this value has a great, great influence in the \lquote Supreme\rquote , \lquote Mighty\rquote  etc. thing\par
+
+\pard\fi-1080\li1080\tx1080\i0 18\tab Number of \lquote Future technologies\rquote  already discovered+1.\par
+
+\pard\nowidctlpar\fi-1080\li1080\tx1080 21\tab Percentages to tax, science and luxuries.\par
+22\tab Government. Valid values are 00-07 (though 07 does not normally exist). A value of 08 or higher causes the game to crash. 00 is of course Anarchy, 01 is Despotism, etc. You can give the barbarians a Democratic (06) government to prevent their cities being subverted.\par
+31\tab Reputation\par
+32-63\tab Treaties. 4 bytes for the treaties with all 8 civs (including Barbarians and their own civ).\par
+
+\pard\nowidctlpar\li1080\tx1080 1st byte:\par
+.... ...1\tab contact\par
+.... ..1.\tab cease fire\par
+.... .1..\tab peace\par
+.... 1...\tab alliance (with peace always)\par
+...1 ....\tab vendetta\par
+1... ....\tab embassy\par
+2nd byte:\par
+..1. ....\tab war\par
+.... .1..\tab ???? used by game\par
+3rd byte:\par
+..1. ....\tab ???? used by game\par
+4th byte:\par
+????\par
+Then the 1st byte for the next civ, for all 7 civs.\par
+
+\pard\nowidctlpar\fi-1080\li1080\tx1080\i\tab NOTE: You can also combine these values, for example to create a war and an alliance at the same time. In this example, your units will be repaired when attacking enemy cities, but in the diplomacy screens the civ will talk with you as if you were at war. More similar strange effects can occur.\par
+\i0 66-72\tab Attitudes. Byte 42 is attitude to 1st player, 43 is to 2nd player, etc.\par
+\lang1036 89-100\tab Technologies. \lang2057 To explain how the bytes work, an example of the first technology byte:\par
+
+\pard\nowidctlpar\li1080\tx1080 .... ...1\tab 1st technology\par
+.... ..1.\tab 2nd    "\par
+.... .1..\tab 3rd    "\par
+.... 1...\tab 4th    "\par
+...1 ....\tab 5th    "\par
+..1. ....\tab 6th    "\par
+1... ....\tab 7th    "\par
+In the next byte are the 8th-14th technology. Note that for some reason the .1.. .... is left out. This is not the case in each of these bytes, though. I don't know why. Though it's fun to know how it works, it is much much easier to set techs using the cheat menu.\par
+
+\pard\nowidctlpar\fi-1080\li1080\tx1080\tab\i NOTE: This is very useful, however, for giving the Barbarians certain technologies. You might want to give them Guerrilla Warfare, for instance.\par
+\tab NOTE: All techs are: FF FF FF FF FF FF FF FF FF FF FF FD. (Excluding user defined techs. Adding those makes it ...... FF instead of ...... FD).\par
+\tab NOTE: In MGE (and in TOT, I believe) all bits in all bytes counts!\i0\par
+103-104\tab military demographics value.\par
+105-106\tab city count. Shows up in MGE when you start a multiplayer game. Otherwise no apparent effect.\par
+109-110\tab sum of city sizes\par
+115-214\tab These bytes controls if the civilization was the first to discover an advance (00) or not (FF, probably any value but 00). Byte 115\super th\nosupersub   stands for the first tech, 116\super th\nosupersub  stands for the second tech, and so on\'85\par
+215-277\tab These bytes stores the number of active units of each kind. The 215\super th\nosupersub  byte is for the number of settlers, the 216\super th\nosupersub  byte is for the number of engineers\'85 and so on.\par
+278-340\tab These bytes stores the number of casualties of each kind of units. The 278\super th\nosupersub  byte is for the number of settlers, the 279\super th\nosupersub  byte is for the number of engineers\'85 and so on.\par
+341-403\tab These bytes stores the number of units of each kind that are being produced (I believe). It is computed on-line, so hex-editing this makes no sense.\par
+997-1010\tab last contact with civs. First two to 1st civ, 3rd and 4th for 2nd civ, etc. FF FF if not available, 01 00 for 1, etc.\par
+\tab\i NOTE: It may be that the FF FF in byte 995 and 996 are for last contact with barbarians, but that is not verifiable.\par
+
+\pard\nowidctlpar\i0\par
+\par
+\par
+
+\pard\keepn\nowidctlpar\s1\sb240\sa60\kerning28\fs28 5. MAP INFORMATION\par
+
+\pard\nowidctlpar\kerning0\fs20\par
+If you have an Hex Editor which has a graphical mode, this is very handy for especially the maps part.\par
+\par
+The \b map header\b0  is composed of 7 words, at offset 13702 from the start of the saved game.\par
+
+\pard\nowidctlpar\fi-720\li720 1\tab map width * 2 (width when using coordinates of civ2 instead of coordinates from the map editor.\par
+
+\pard\nowidctlpar 2\tab map height\par
+3\tab surface (width * height)\par
+
+\pard\nowidctlpar\fi-720\li720 4\tab shape (0=round, 1=flat). Really determined by byte 13 at the start of the savegame, instead of here.\par
+
+\pard\nowidctlpar 5\tab seed (can be anything, but there are only 64 patterns)\par
+6\tab (map width * 2) / 4 [rounded up]\par
+7\tab map height / 4 [rounded up]\par
+\par
+\b map data block 1\b0  is composed of 7 sections of width * height bytes, and starts at offset 13716 from the start of the saved game.\par
+\par
+Each of the sections represents some data for each of the civilizations. So, the first block contains information about the white civ, the second block contains information about the green civ etc.\line\tab\par
+Each of these blocks encode the known tile improvements for the civilization in question. The second byte in BLOCK 2 uses these same codes, except that then the real tile improvements of all civilizations are mentioned:\par
+
+\pard\nowidctlpar\fi-1440\li2160 0000 0000\tab "Nothing", i.e. either the square in question contains no units or tile improvements, or it hasn't been discovered yet.\par
+.... ...1\tab Unit present\par
+.... ..1.\tab City present\par
+.... .1..\tab Irrigation\par
+.... 1...\tab Mining\par
+...1 ....\tab Road\par
+..1. ....\tab Railroad\par
+.1.. ....\tab Fortress\par
+1... ....\tab Pollution\par
+
+\pard\nowidctlpar\par
+
+\pard\nowidctlpar\qj Farmland is irrigation plus mining, railroad is really a combination of road and a railroad "upgrade" (..1. ....). An airbase is a combination of the fortress and city present codes (which explains the airbase "bugs", such as extra food, and acting as railroad, just like a city square). In \i Civilization II: Test of Time\i0 , transport sites are marked with a combination of the pollution and "city present" codes.\par
+
+\pard\nowidctlpar\par
+All cities, including unknown cities, are marked. Undiscovered (see 5th byte in BLOCK 2) cities are generally (not always) assumed to be ungarrisoned (i.e. no "unit present" code). A city that has never been discovered and is already destroyed will remain on a civilization's map, until the area is "re-explored". Enemy cities or units that are lost out of sight, will remain marked on their last seen location, but again only as long as no news about the area is gathered.\par
+\par
+\b map data block 2\b0  (width * height * 6 bytes) contains only one map, but each square is now represented by a sequence of 6 bytes.\par
+\par
+
+\pard\nowidctlpar\li720 The \b first byte\b0  determines the terrain type. A terrain can have a combined hex pair of one terrain type (the second number) and a "river" or "no resource" flag:\par
+\b\par
+binary\tab\tab decimal\par
+\b0 .... 0000\tab 0\tab Desert\par
+.... 0001  \tab 1\tab Plains\par
+.... 0010  \tab 2\tab Grassland\par
+.... 0011  \tab 3\tab Forest\par
+.... 0100  \tab 4\tab Hills\par
+.... 0101  \tab 5\tab Mountains\par
+.... 0110  \tab 6\tab Tundra\par
+.... 0111  \tab 7\tab Glacier\par
+.... 1000  \tab 8\tab Swamp\par
+.... 1001  \tab 9\tab Jungle\par
+.... 1010  \tab 10\tab Ocean\par
+\par
+..1. ....\tab 32\tab Terrain resource animation on (??, Test of Time only)\par
+.1.. ....\tab 64\tab No resource\par
+1... ....\tab 128\tab River\par
+\par
+As you can see from the above table, terrains can't co-exist, but the no-resource and river bit can appear together and in combination with any terrain.\par
+\par
+The \b second byte\b0  determines the tile improvements. The same code is used here as in map block 1.\par
+
+\pard\nowidctlpar\par
+
+\pard\nowidctlpar\li720 The \b third byte\b0  is an indicator for the city radii. Each civilization colour has its own city radius code:\par
+
+\pard\nowidctlpar\li1440 White\tab\tab 20\par
+Green\tab\tab 40\par
+Blue\tab\tab 60\par
+Yellow\tab\tab 80\par
+Cyan\tab\tab A0\par
+Orange\tab\tab C0\par
+Purple\tab\tab E0\par
+
+\pard\nowidctlpar\li720 Barbarian cities and squares that aren't part of a city radius will have the code 00. When two cities of two different civilizations share a part of their city radius the squares in question will be given to one of those cities, not both. It's very likely there is some sort of an algorithm to determine how squares are divided, perhaps the tiles are simply assigned randomly.\i\par
+
+\pard\nowidctlpar\li710\par
+NOTE: After observing this a little more it seems that on creation, all unworked tiles (by other cities nearby) are marked. Whenever a city starts to work a square (or the "working" is adjusted in general), it is marked again. When a city is destroyed, the tile is unmarked (or a near city "takes over"). It doesn't seem to have any significant meaning.\par
+
+\pard\nowidctlpar\li720\qj\i0\line The \b fourth byte\b0  is a land/sea body counter. This simply gives every different body of land and every body of water a separate number. Counting starts at the top-left corner and procedes from left to right and from top to bottom. Water bodies of less than 9 squares always have number 63, but do count towards the total. Both the land and water counters start counting at one.\par
+\i\par
+
+\pard\nowidctlpar\li710\qj NOTE: To see this byte "in action", right-click on a Civ2 square. In the Status Window you'll see something like this: \par
+Loc: (12, 34) 5\par
+12 is the X-coordinate of that square \par
+34 is its Y-coordinate \par
+5 is this "body counter".\par
+
+\pard\nowidctlpar\li720\qj\i0\par
+
+\pard\nowidctlpar\li720 The \b fifth byte\b0  represents "visibility", indicating which of the civilizations have explored that particular square. 00 means none of the civilizations (including the barbarians, who are the "0th" (red) civilization) have uncovered that square so far:\par
+
+\pard\nowidctlpar\li1440 .... ...1\tab Red\par
+.... ..1.\tab White\par
+.... .1..\tab Green\par
+.... 1...\tab Blue\par
+...1 ....\tab Yellow\par
+..1. ....\tab Cyan\par
+.1.. ....\tab Orange\par
+1... ....\tab Purple\par
+\par
+
+\pard\nowidctlpar\li720\qj The \b sixth byte\b0  actually encodes two things. The \i first 4 bits \i0 concern tile ownership. An indicator for this tile ownership is the color of an airbase. A funny effect that can be created with faulty ownership values is that a civilization attacks its own unit.\par
+\par
+This ownership information is also used to clear goody huts. Only squares with an owner value of 0 can have goody huts.\par
+\par
+The used codes are as follows:\par
+
+\pard\nowidctlpar\li720\b\par
+hex.\tab binary\par
+\b0 0.\tab 0000\tab Red (Barbarians)\par
+1.\tab 0001\tab White\par
+2.\tab 0010\tab Green\par
+3.\tab 0011\tab Blue\par
+4.\tab 0100\tab Yellow\par
+5.\tab 0101\tab Cyan\par
+6.\tab 0110\tab Orange\par
+7.\tab 0111\tab Purple\par
+\par
+F.\tab 1111\tab None\par
+\par
+
+\pard\nowidctlpar\li720\qj The \i last 4 bits\i0  concern tile fertility. Values for fertility range from 0 to 15 (0 to F in hexadecimals), 0 being completely infertile, 15 the most fertile. The AI uses this information to determine where to build its cities (it does NOT use the actual terrain production values from the RULES.TXT).\par
+
+\pard\nowidctlpar\li710\qj\par
+Civilization II only assigns fertility values to the Grassland and Plains terrains, all other terrains initially have a value of 0. And the AI only builds cities on terrain with a value greater than 7. If the fertility value is 15, the AI will immediately build a city there as soon as a settler finds it.\par
+\par
+Fertility values of terrains other than Grassland or Plains can, however, increase because of tile improvements. Generally speaking, the fertility values on a map seem to even out, with fertile terrains losing fertility and "barren" terrains becoming slightly more fertile. This might be influenced by the map size, total land mass and amount of fertile land still available. Rivers, resources, farmland, mining, irrigation and roads may also have an effect, but I'm not sure how big this effect is, and if it depends on their productivity as described in the RULES.TXT. Fertility values within a city radius are decreased by a certain number, preventing the AI from building cities within an existing city radius.\par
+
+\pard\nowidctlpar\par
+\b map data block 3\b0  (map header value 6 * map header value 7 * 2 bytes)\b\par
+\b0\par
+This block seems to have two parts, in structure roughly similar to that of the map. However, this section seems to be entirely pointless. Even more so because in \i Test of Time\i0  there's only ever one "third block", not as many as there are maps.\par
+\par
+\par
+\i Right after the map information and before the units information, there's a block of 1024 bytes (10240 in ToT). This has almost certainly nothing to do with the map.\par
+\i0\par
+\par
+\par
+
+\pard\keepn\nowidctlpar\s1\sb240\sa60\kerning28\fs28 6. UNITS INFORMATION\par
+
+\pard\nowidctlpar\kerning0\fs20\par
+Located right before the city information. It may be handy to set you hex editor to show 13/26 bytes per row, so that a unit is exactly 2/1 rows under the one before him. The units are numbered (right click on a unit and you'll see its ID number) according to the way they're ordered in here.\par
+\par
+Find specific unit by toggling eg. veteran status. Alternatively, search for the location of the unit by searching the x and y coordinates. If your unit is located at (88,46) look for the hex value 58 00 2E 00.\par
+\par
+01-02\tab horizontal coordinates of unit\par
+
+\pard\nowidctlpar\li710\tab\i NOTE: the unit is invisible if moved, unless the terrain it now occupies has the "contains unit" flag toggled on. See terrains\par
+NOTE: Killed units get an incorrect coordinate value, that appears to depend on the square they were killed.\i0\par
+
+\pard\nowidctlpar 03-04\tab vertical coordinates of unit (same \i NOTES \i0 as with horizontal)\par
+05-06\tab 1st byte:\par
+
+\pard\nowidctlpar\fi-1440\li2160 .1.. ....\tab this bit appear to be set on the first time you move an unit - and remains this way\par
+
+\pard\nowidctlpar\tab ...1 ....\tab paratrooper launched this turn\par
+\tab .... ..1.\tab immobile\par
+\tab 2nd byte:\par
+\tab 1... ....\tab automate (not just settlers!)\par
+\tab .1.. ....\tab unit is \lquote waiting\rquote  (the \lquote w\rquote  was pressed on this unit)\par
+
+\pard\nowidctlpar\fi720 ..1. ....\tab veteran status\par
+
+\pard\nowidctlpar 07\tab unit type (counted in rules.txt, 00=settler, 01=engineer, etc.)\par
+08\tab owning civilization\par
+09\tab unit movement (multiplied by \i road move multiplier\i0 , except with "alpine" units)\par
+
+\pard\nowidctlpar\fi-720\li720 10\tab represents whose (not owner) civilizations know where the unit is. 0 for barbarians, 1 for romans, 2 for green\'85 Also, the unit flag of the unit\rquote s tile on section 1 of the map must be on in order to display the unit in the civilization\rquote s map\par
+
+\pard\nowidctlpar 11\tab number of hitpoints lost\par
+
+\pard\nowidctlpar\fi-720\li720 12\tab last \ldblquote direction\rdblquote  the unit moved to. It\rquote s probably a help that is used when making a route for the \ldblquote go to\rdblquote  command. The value is 0-7, as there are 8 possible directions (0 for Northeast, 1 for East etc. through to 7 for North). FF stands for not moved)\par
+13\tab This byte is composed of two fields of 4 bits each. The first field has not yet being worked out. \par
+
+\pard\nowidctlpar\li720 The second field (the 4 leftmost bits) is related to the task (improve the terrain, explore) that the AI has assigned to the unit, and it\rquote s displayed in the units\rquote  shield when you use the cheat menu to reveal all the terrain. Values (more a guess that any other thing):\par
+2\tab Build a new city\par
+9\tab Explore\par
+
+\pard\nowidctlpar\fi-720\li720\tab I believe that the first field is also related to the task the AI has assigned to the unit (58 appears to be the standard value for human-controlled units), but the problem is that the AI analyzes each turn the role of all units and reassign it, so it\rquote s difficult to check the AI\rquote s reaction to these fields.\par
+14\tab either the caravan commodity (00 hides, 01 wool, ..., 0A uranium, F0 food supply, rest makes no sense [80 or bigger means food supply] Using a value bigger than 0A makes the program to read the name of the commodity from LABELS.TXT with unpredictable results)\par
+
+\pard\nowidctlpar\li720 or turns of work completed for settlers\par
+or turns that the units have spent in air, for bombers and the like\par
+
+\pard\nowidctlpar\fi-720\li720 15\tab It appears to be an \lquote alive\rquote  byte (0=units alive,other=unit dead) with some units, but still, the general use of this byte is not clear.\par
+
+\pard\nowidctlpar 16\tab orders:\par
+\tab 01 : fortify (not yet fortified, but ordered to do so)\par
+\tab 02 : fortified\par
+\tab 03 : sentry\par
+\tab 04 : build fortress\par
+\tab 05 : builds road/railroad\par
+\tab 06 : builds irrigation\par
+\tab 07 : builds mine\par
+\tab 08 : transform terrain\par
+\tab 09 : cleans up pollution\par
+\tab 0A : builds airbase\par
+\tab 0B : go to (see number 19-20 and 21-22)\par
+
+\pard\nowidctlpar\fi-852\li852\tab FF : no orders (any other number will also do, but computer uses FF)\par
+
+\pard\nowidctlpar 17\tab home city with number is city number (FF is none)\par
+
+\pard\nowidctlpar\li720 (You can find out the city number with for example "find city". If all cities that are on the map are listed, you can simply count them to find the number)\par
+
+\pard\nowidctlpar 18\tab not appear to be used (0 always)\par
+19-20\tab horizontal coordinate of "go-to" command\par
+21-22\tab vertical coordinate of "go-to" command\par
+
+\pard\nowidctlpar\fi-710\li710 23-24\tab link to ID's of other units to be drawn in the same square on top of the unit\par
+\tab\tab\i (CAUTION: can produce strange effects)\par
+
+\pard\nowidctlpar\i0 25-26\tab link to ID's of other units to be drawn in the same square under the unit\par
+
+\pard\nowidctlpar\fi720\li720\i (CAUTION: can produce strange effects)\par
+
+\pard\nowidctlpar\i0\par
+\par
+\'85at location 27, the next unit starts all over again.\par
+In MGE, the next unit start at location 33 (so one unit consists of 32 bytes instead of 26).\par
+\par
+\par
+\par
+
+\pard\keepn\nowidctlpar\s1\sb240\sa60\kerning28\fs28 7. CITIES INFORMATION\par
+
+\pard\nowidctlpar\kerning0\fs20\par
+The easiest way to locate this part of the saved game is to make a search for the name of a city. They are located near the end of the save game.\par
+Keep in mind that the city name itself is on the 33th hex numbers pair of the information block about that city.\par
+\par
+You can move the city to another location by changing the vertical and horizontal coordinate of the city. Keep in mind though that for the city to show up, the square where the city will stand needs to have the "city present" flag enabled. See 6.1.2 (map blocks) for more information about this.\par
+\par
+You can have multiple cities on one square, you can have cities adjacent to each other, you can have cities in the sea. Everything is possible.\par
+\par
+1-2\tab vertical coordinates of city  x\par
+3-4\tab horizontal coordinates of city  y      \par
+5\tab 1... .... can build coastal improvements\par
+
+\pard\nowidctlpar\fi720 ...1 .... denotes auto-build. Under whose rule is in byte 8\par
+.... 1... denotes stolen tech\par
+.... .1.. denotes improvement sold\par
+.... ..1. denotes "we love the king day"\par
+.... ...1 denotes civil disorder\par
+
+\pard\nowidctlpar\fi-720\li720 6\tab\lang1043 .... .1.. can build hydroplant\lang2057\par
+
+\pard\nowidctlpar 7\tab ..1. .... can build ships (only if coastal flag is checked)\par
+8\tab ...1 .... denotes objective x3\par
+
+\pard\nowidctlpar\fi-842\li1562 .... .1.. denotes objective x1 (you can also set both the x3 and x1 objective)\par
+
+\pard\nowidctlpar\fi720 .... ..1. denotes auto-build under domestic advisor\par
+.... ...1 denotes auto-build under military advisor\par
+
+\pard\nowidctlpar\fi720\li720 .... ..00 (both military and domestic flags to 0) to turn\par
+on both at same time. Note that these also need byte 5\par
+the auto-build flag to be active.\par
+
+\pard\nowidctlpar 9\tab city owner [00-07 (don't use >7)]\par
+10\tab city size (negative sizes cultivate no squares but produce food)\par
+11\tab who originally built the city [00-07] (or more likely the last owner).\par
+
+\pard\nowidctlpar\fi-720\li720 12\tab This byte has a counter that increments each turn. With this byte, I believe, you are to able to determine how much time has passed since last capture (because after a capture there are \lquote extra unhappiness\rquote  for some turns)\par
+13\tab Who knows where the city is. It doesn\rquote t apply for the city\rquote s owner! The leftmost bit is for romans, next for green civs, and so on\'85 The rightmost bit is for barbarians.\par
+
+\pard\nowidctlpar 15-22\tab working city production squares??\par
+\tab Not really. The size of a foreign city in a civilization\rquote s map is not updated until\par
+
+\pard\nowidctlpar\li710\tab you put a unit near the city! Until that, the foreign city\rquote s that you can see in the map size remains constant. These bytes stored the size of the city in a foreign map. The byte 15th is the size that the white civilization believes the city has, the byte 16th is the size that the green civilization believes the city has\'85 the byte 22\super nd\nosupersub  is the size the barbarians civilization believes the city has. \par
+\i NOTE: In order to have a city in the SHIFT+C list but not displayed, the correspondent bit in the 13\super th\nosupersub  byte should be on and a size of 0 should be added to the correspondent 15\super th\nosupersub -22\super nd\nosupersub  byte!\par
+
+\pard\nowidctlpar\fi-710\li710\i0 23-26\tab specialists, 4 hex positions representing 16 base 4 numbers representing specialists\par
+
+\pard\nowidctlpar\fi720 0=none, 1=elvis, 2=tax, 3=sci.\par
+example: 06000000, first hex 06=1*4+2: 1 taxman and 1 elvis\par
+
+\pard\nowidctlpar 27-28\tab food in food box (FF=famine)\par
+29-30\tab shields in shield box\par
+31-32\tab net trade (not including those from trade routes)\par
+33-47\tab city name buffer [15 characters, end with a 00]\par
+48\tab 00 (because city name cannot exceed 15 characters)\par
+49\tab workers in inner circle (8 squares next to city square) [ff=all worked]\par
+50\tab workers on 8 of the outer circle\par
+51\tab workers on 4 of the outer circle\par
+
+\pard\nowidctlpar\fi10\li710 [first digit is always 1, the second digit represents the 4 working positions]\par
+
+\pard\nowidctlpar 52\tab number of specialists times 4 [eg. 08=2 specialists]\par
+53-57\tab city improvements:\par
+
+\pard\nowidctlpar\fi720 1... .... is 7th improvement\par
+.1.. .... is 6th improvement\par
+..1. .... is 5th improvement\par
+...1 .... is 4th improvement\par
+.... 1... is 3rd improvement\par
+.... .1.. is 2nd improvement\par
+.... ..1. is 1st improvement\par
+
+\pard\nowidctlpar\li710\i NOTE: The second leftmost bit in the 53rd byte stands for the Palace. The first city in the list of cities with a Palace is the capital (strange - does civ2 swap cities\rquote  order in the list when you move the capital?)\par
+
+\pard\nowidctlpar\i0 58\tab item in production (can be used to force production)\par
+
+\pard\nowidctlpar\fi720\li720 [units 00-3f]\par
+(improvements are inversed [FF=1st FE=2nd etc])\par
+
+\pard\nowidctlpar 59\tab number of active trade routes [decimal, can also be >03]\par
+60-62\tab 1st, 2nd and 3rd trade commodities available\par
+           - [00-0F (are 1st-15th in rules.txt)]\par
+           - supplied trade goods, eg (Coal), are inverse values.\par
+             eg., commodity 13 is already supplied, the value is F3 (-13)\par
+           - if in parentheses use FF compliment (can force trade commodity\par
+             eg., 0F=Uranium, F0 = (Uranium), which is ff-0f\par
+63-65\tab 1st, 2nd and 3rd trade commodities demanded\par
+66-68\tab 1st, 2nd and 3rd trade commodities in route\par
+
+\pard\nowidctlpar\fi-852\li852 69-74\tab 1st, 2nd and 3rd trade route partner city number (city number is 85th-86th position)\par
+
+\pard\nowidctlpar 75-76\tab science\par
+77-78\tab tax\par
+79-80\tab number of trade icons (including trade routes)\par
+81\tab total food production\par
+82\tab total shield production\par
+83\tab number of happy citizen\par
+84\tab number of unhappy citizen (double unhappy count twice??)\par
+\par
+\'85at location 85, the next city starts all over again.\par
+In MGE, the next city start at location 89 (so one city consists of 88 bytes instead of 84).\par
+\par
+\par
+\par
+
+\pard\keepn\nowidctlpar\s1\sb240\sa60\kerning28\fs28 8. BUILT CITIES INFORMATION & MORE\par
+
+\pard\nowidctlpar\kerning0\fs20\par
+Right after the last city follows 3 bytes of information for each of the 21 civilizations, starting with the Romans (and further according to the order in the RULES.TXT):\par
+1\tab ??? (mostly zero or one)\par
+
+\pard\nowidctlpar\fi-720\li720 2\tab number of cities built so far. This value determines which city name to use in CITIES.TXT. The counter is reset to zero after the last city of the @EXTRA cities.\par
+\tab A value of FF will make the next city get the name of the civilization cities "header" (i.e. @ROMANS for the Romans etc.). That can normally only ever happen if the number of available cities for a civilization (incl. the extra cities) is larger than 254.\par
+
+\pard\nowidctlpar 3\tab ??? (mostly zero or one)\par
+...\par
+\par
+After these details follows more miscellaneous data (continuing the byte count from the start of this section)...\par
+\par
+63-64\tab horizontal coordinate of the cursor\par
+
+\pard\nowidctlpar\tx360 65-66\tab vertical coordinate of the cursor\par
+
+\pard\nowidctlpar\par
+1087 and a half bytes before the event section (or the end of the file if there is no event section) there are the passwords for the civilizations.\par
+
+\pard\nowidctlpar\tx360\par
+
+\pard\nowidctlpar The last 338 bytes of a savegame (before the possible event section) keeps track of which civilizations were destroyed and when. Only the first 12 are recorded.\par
+\i If after destroying a civilization you see an extra "destroyed by barbarians" message, that will be reflected in this section as well, with a civilization being killed twice in one turn, once by you, then by the barbarians.\par
+\i0 1-2\tab number of civilizations killed (12 at most)\par
+
+\pard\nowidctlpar\fi-720\li720 3-26\tab 12 * 2 bytes to indicate the turn these civilizations died. If there are less than 12, the rest is zero-ed out.\par
+27-38\tab 12 * 1 byte, the number of the civilization that killed it, 0 for barbarians.\par
+39-50\tab 12 * 1 byte, no idea what this means yet.\par
+51-\tab for each of the 12, in the same order as the previous 3 items, a 24 byte string with the name of the destroyed civilization. Again, anything unused is zero-ed out. \par
+
+\pard\nowidctlpar\par
+\par
+\par
+
+\pard\keepn\nowidctlpar\s1\sb240\sa60\kerning28\fs28\lang1036 9. PASSWORDS\par
+
+\pard\nowidctlpar\kerning0\fs20\par
+\b\fs22\lang2057 9.1 Password location and format\par
+\b0\fs20\par
+
+\pard\nowidctlpar\qj The passwords are located 1087 and a half before the end of the file (or the event section, if there is any), so, yes, they start in the middle of a byte! Passwords section is 224 bytes long, with 32 bytes for each civilization\rquote s password.\par
+\par
+The format of each password is:\par
+\tab\par
+\tab XXX\'85 Y\par
+\par
+where X stands for a character byte and Y for a ending byte. There can be up to 31 characters bytes (X) in each 32 password, an there is always an ending byte (Y). The format of the ending byte is:\par
+
+\pard{\pntext\f3\'B7\tab}{\*\pn\pnlvlblt\pnf3\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-360\li1080\qj The first 4 bits tells the password length. The password can be up to 31 characters length, and there is only room for a \ldblquote 16\rdblquote  length in 4 bits, so the counter starts in 0 again when you reach 16. That is, the length will be 5 for both a password of length 5 or of length 21 [you can say that this 4 bits stores the length mod 16, if you know the math operation mod].\par
+{\pntext\f3\'B7\tab}The rightmost 4 bits tell the civilization that stored the password, using some of this values:\par
+
+\pard\nowidctlpar\qj\par
+
+\pard\nowidctlpar\li1080\qj\i Civilization\tab\tab Decimal Value\par
+\i0 White\tab\tab 2 or 3\par
+Green\tab\tab 4 or 5\par
+Blue\tab\tab 6 or 7\par
+Yellow\tab\tab 8 or 9\par
+Cyan\tab\tab 10 or 11\par
+Orange\tab\tab 12 or 13\par
+Purple\tab\tab 14 or 15\par
+
+\pard\nowidctlpar\qj\par
+
+\pard\nowidctlpar\li1080\qj\i Note that the values 0 and 1 are not used, so I wonder if they are for the barbarian civilization (it would be nice if someone tested that). \par
+
+\pard\nowidctlpar\qj\i0\par
+The byte-characters are the result of the encoding all the characters of the password (see next section)\par
+\par
+\par
+\b\fs22 9.2 How to crypt byte-characters\par
+\b0\fs20\par
+The passwords are encrypted, as I\rquote ve told before, in a \lquote character after character\rquote  basis. Each character is encrypted in an independent way from the rest of characters, but dependent of both the character itself and its position inside the password (so a \ldblquote d\rdblquote  in the first character is not encoded in the same way that a \ldblquote d\rdblquote  in the fifth character of a password). For encrypting the bytes, the ANSI table is used! (In Microsoft Windows, I don\rquote t know how it works in MAC OS). An ANSI table give you a 8 bit value for all character in the table.\par
+\par
+\par
+\b 9.2.1 First step: Shifting bits\par
+\par
+\b0 The first step to encode a character is to shift its eight bits one time to the left. It\rquote s a logical shift, so what goes out in a border enters in the other border. For instance, let\rquote s say that we have the \lquote a\rquote  character (97 in an ANSI table); 97 is 1100001, so we do\par
+\par
+\b 1\b0 100001 \par
+*-------*\tab Shifting\'85\par
+1000001\b 1\b0\par
+\par
+All bits have gone 1 step to the left, and the leftmost bit is now the rightmost bit!\par
+\par
+BTW, that\rquote s the same that multiplying by 2, doing mod by 256 and, after that, adding 1 if the original ANSI code was bigger than 127. \par
+\tab\par
+Let\rquote s see a complete example: A player wants to use the password \ldblquote yaroslav\rdblquote  for his/her Spanish civilization.\par
+\par
+\i Character\tab ANSI Value\tab ANSI Value (binary)\tab\tab Encrypted Value (step 1)\par
+\i0 y\tab\tab 121\tab\tab 01111001\tab\tab\tab 242 (11110010)\par
+a\tab\tab 97\tab\tab 01100001\tab\tab\tab 194 (11000010)\par
+r\tab\tab 114\tab\tab 01110010\tab\tab\tab 228 (11100100)\par
+o\tab\tab 111\tab\tab 01101111\tab\tab\tab 222 (11011110)\par
+s\tab\tab 115\tab\tab 01110011\tab\tab\tab 230 (11100110)\par
+l\tab\tab 108\tab\tab 01101100\tab\tab\tab 216 (11011000)\par
+a\tab\tab 97\tab\tab 01100001\tab\tab\tab 194 (11000010)\par
+v\tab\tab 118\tab\tab 01110110\tab\tab\tab 236 (11101100)\par
+\par
+\par
+\b 9.2.2 Second step: The position-dependent algorithm \par
+\par
+\b0 In the second step you modify the number you got from the first step, in a way that depends on the position of the character in the password. For position purposes, the first position is the position number 0; the second is the number 1, and so on until 16, where the counter returns to 0. \par
+\par
+To get the offset you have to add is somewhat easy. To get started, write the position number in a four bit format (7 for instance is 0111). After that, you must get the value from the first step and negate the leftmost bit from 1 to 0 or from 0 to 1 if the leftmost bit of the position number is 1, negate the second leftmost bit from 1 to 0 or from 0 to 1 if the second leftmost bit of the position number is 1, and so on until you end with the four bits of the position number.\par
+\par
+Returning to our example:\par
+\par
+\i Character\tab Position\tab ANSI\tab Encrypted Value (1)\tab\tab Encrypted Value (2)\par
+\i0 y\tab\tab 0 (0000)\tab 121\tab 242 (11110010)\tab\tab 242 (11110010)\par
+a\tab\tab 1 (000\b 1\b0 )\tab 97\tab 194 (11000010)\tab\tab 210 (110\b 1\b0 0010)\par
+r\tab\tab 2 (00\b 1\b0 0)\tab 114\tab 228 (11100100)\tab\tab 196 (11\b 0\b0 00100)\par
+o\tab\tab 3 (00\b 11\b0 )\tab 111\tab 222 (11011110)\tab\tab 238 (11\b 10\b0 1110)\par
+s\tab\tab 4 (0\b 1\b0 00)\tab 115\tab 230 (11100110)\tab\tab 166 (1\b 0\b0 100110)\par
+l\tab\tab 5 (0\b 1\b0 0\b 1\b0 )\tab 108\tab 216 (11011000)\tab\tab 136 (1\b 0\b0 0\b 0\b0 1000)\par
+a\tab\tab 6 (0\b 11\b0 0)\tab 97\tab 194 (11000010)\tab\tab 162 (1\b 01\b0 00010)\par
+v\tab\tab 7 (0\b 111\b0 )\tab 118\tab 236 (11101100)\tab\tab 156 (1\b 001\b0 1100)\par
+\par
+\b\par
+9.2.3 Third step: The civilization-depending algorithm\par
+\par
+\b0 The third (and last) step is to apply an algorithm that varies from civilization to civilization (it\rquote s constant between civilizations of the same colour: for instance, it\rquote s the same for Romans and Russians). The algorithm consist in \b divide\b0  the ORIGINAL ANSI VALUE (not the result of the 2\super nd\nosupersub  step) by a number, take the \b rest\b0  (that is: the mod operation!) and \b add\b0  an offset, that depends of the rest, to the MODIFIED VALUE (that is, the value we got in the second step). Below are the divide factor and the offset for all the civilizations:\par
+\par
+
+\pard\nowidctlpar\qc\i White Civilization\par
+\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\b\i0 divide by\cell rest\cell add\cell\row\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\brdrl\brdrdash\brdrw20 \brdrt\brdrdash\brdrw20 \brdrr\brdrdash\brdrw20 \brdrb\brdrdash\brdrw20 \b0 2\cell 0\cell +2\cell\row\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\brdrl\brdrdash\brdrw20 \brdrt\brdrdash\brdrw20 \brdrr\brdrdash\brdrw20 \brdrb\brdrdash\brdrw20 \cell 1\cell -2\cell\row 
+\pard\nowidctlpar\qc\i\par
+Green civilization\par
+\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\b\i0 divide by\cell rest\cell add\cell\row\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\brdrl\brdrdash\brdrw20 \brdrt\brdrdash\brdrw20 \brdrr\brdrdash\brdrw20 \brdrb\brdrdash\brdrw20 \b0 4\cell 0 or 1\cell +4\cell\row\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\brdrl\brdrdash\brdrw20 \brdrt\brdrdash\brdrw20 \brdrr\brdrdash\brdrw20 \brdrb\brdrdash\brdrw20 \cell 2 or 3\cell -4\cell\row 
+\pard\nowidctlpar\qc\i\par
+Blue civilization\par
+\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\b\i0 divide by\cell rest\cell add\cell\row\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\brdrl\brdrdash\brdrw20 \brdrt\brdrdash\brdrw20 \brdrr\brdrdash\brdrw20 \brdrb\brdrdash\brdrw20 \b0 4\cell 0\cell +6\cell\row\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\brdrl\brdrdash\brdrw20 \brdrt\brdrdash\brdrw20 \brdrr\brdrdash\brdrw20 \brdrb\brdrdash\brdrw20 \cell 1\cell +2\cell\row\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\brdrl\brdrdash\brdrw20 \brdrt\brdrdash\brdrw20 \brdrr\brdrdash\brdrw20 \brdrb\brdrdash\brdrw20 \cell 2\cell -2\cell\row\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\brdrl\brdrdash\brdrw20 \brdrt\brdrdash\brdrw20 \brdrr\brdrdash\brdrw20 \brdrb\brdrdash\brdrw20 \cell 3\cell -6\cell\row 
+\pard\nowidctlpar\qc\i\par
+Yellow civilization\par
+\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\b\i0 divide by\cell rest\cell add\cell\row\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\brdrl\brdrdash\brdrw20 \brdrt\brdrdash\brdrw20 \brdrr\brdrdash\brdrw20 \brdrb\brdrdash\brdrw20 \b0 8\cell 0,1,2,3\cell +8\cell\row\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\brdrl\brdrdash\brdrw20 \brdrt\brdrdash\brdrw20 \brdrr\brdrdash\brdrw20 \brdrb\brdrdash\brdrw20 \cell 4,5,6,7\cell -8\cell\row 
+\pard\nowidctlpar\qc\i\par
+Cyan civilization\par
+\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\b\i0 divide by\cell rest\cell add\cell\row\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\brdrl\brdrdash\brdrw20 \brdrt\brdrdash\brdrw20 \brdrr\brdrdash\brdrw20 \brdrb\brdrdash\brdrw20 \b0 8\cell 0 or 2\cell +10\cell\row\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\brdrl\brdrdash\brdrw20 \brdrt\brdrdash\brdrw20 \brdrr\brdrdash\brdrw20 \brdrb\brdrdash\brdrw20 \cell 1 or 3\cell +6\cell\row\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\brdrl\brdrdash\brdrw20 \brdrt\brdrdash\brdrw20 \brdrr\brdrdash\brdrw20 \brdrb\brdrdash\brdrw20 \cell 4 or 6\cell -6\cell\row\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\brdrl\brdrdash\brdrw20 \brdrt\brdrdash\brdrw20 \brdrr\brdrdash\brdrw20 \brdrb\brdrdash\brdrw20 \cell 5 or 7\cell -10\cell\row 
+\pard\nowidctlpar\qc\i\par
+Orange civilization\par
+\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\b\i0 divide by\cell rest\cell add\cell\row\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\brdrl\brdrdash\brdrw20 \brdrt\brdrdash\brdrw20 \brdrr\brdrdash\brdrw20 \brdrb\brdrdash\brdrw20 \b0 8\cell 0 or 1\cell +12\cell\row\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\brdrl\brdrdash\brdrw20 \brdrt\brdrdash\brdrw20 \brdrr\brdrdash\brdrw20 \brdrb\brdrdash\brdrw20 \cell 2 or 3\cell +4\cell\row\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\brdrl\brdrdash\brdrw20 \brdrt\brdrdash\brdrw20 \brdrr\brdrdash\brdrw20 \brdrb\brdrdash\brdrw20 \cell 4 or 5\cell -4\cell\row\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\brdrl\brdrdash\brdrw20 \brdrt\brdrdash\brdrw20 \brdrr\brdrdash\brdrw20 \brdrb\brdrdash\brdrw20 \cell 6 or 7\cell -12\cell\row 
+\pard\nowidctlpar\qc\i\par
+Purple civilization\par
+\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\b\i0 divide by\cell rest\cell add\cell\row\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\brdrl\brdrdash\brdrw20 \brdrt\brdrdash\brdrw20 \brdrr\brdrdash\brdrw20 \brdrb\brdrdash\brdrw20 \b0 8\cell 0\cell +14\cell\row\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\brdrl\brdrdash\brdrw20 \brdrt\brdrdash\brdrw20 \brdrr\brdrdash\brdrw20 \brdrb\brdrdash\brdrw20 \cell 1\cell +10\cell\row\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\brdrl\brdrdash\brdrw20 \brdrt\brdrdash\brdrw20 \brdrr\brdrdash\brdrw20 \brdrb\brdrdash\brdrw20 \cell 2\cell +6\cell\row\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\brdrl\brdrdash\brdrw20 \brdrt\brdrdash\brdrw20 \brdrr\brdrdash\brdrw20 \brdrb\brdrdash\brdrw20 \cell 3\cell +2\cell\row\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\brdrl\brdrdash\brdrw20 \brdrt\brdrdash\brdrw20 \brdrr\brdrdash\brdrw20 \brdrb\brdrdash\brdrw20 \cell 4\cell -2\cell\row\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\brdrl\brdrdash\brdrw20 \brdrt\brdrdash\brdrw20 \brdrr\brdrdash\brdrw20 \brdrb\brdrdash\brdrw20 \cell 5\cell -6\cell\row\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\brdrl\brdrdash\brdrw20 \brdrt\brdrdash\brdrw20 \brdrr\brdrdash\brdrw20 \brdrb\brdrdash\brdrw20 \cell 6\cell -10\cell\row\trowd\trgaph15\trleft-30\trqc\trbrdrl\brdrdash\brdrw20 \trbrdrt\brdrdash\brdrw20 \trbrdrr\brdrdash\brdrw20 \trbrdrb\brdrdash\brdrw20 \trpaddl15\trpaddr15\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx1115\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2031\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2947 
+\pard\intbl\brdrl\brdrdash\brdrw20 \brdrt\brdrdash\brdrw20 \brdrr\brdrdash\brdrw20 \brdrb\brdrdash\brdrw20 \cell 7\cell -14\cell\row 
+\pard\nowidctlpar\qc\i\par
+
+\pard\nowidctlpar\qj\i0\par
+If the final encrypted value is bigger than 256, you should replace it with the encrypted value - 256. If it is lesser than 0, you should replace it with 256 - value.\par
+\par
+Again, with our example (remember, yaroslav was playing Spanish, so he must use the YELLOW table):\par
+\par
+\i Character\tab ANSI\tab Encrypted Value (2)\tab\tab Rest\tab\tab Final Encrypted Value\par
+\i0 y\tab\tab 121\tab 242 (11110010)\tab\tab 1\tab\tab 250 (11111010)\par
+a\tab\tab 97\tab 210 (11010010)\tab\tab 1\tab\tab 218 (11011010)\par
+r\tab\tab 114\tab 196 (11000100)\tab\tab 2\tab\tab 204 (11001100) \par
+o\tab\tab 111\tab 238 (11101110)\tab\tab 7\tab\tab 230 (11100110)\par
+s\tab\tab 115\tab 166 (10100110)\tab\tab 3\tab\tab 174 (10101110)\par
+l\tab\tab 108\tab 136 (10001000)\tab\tab 4\tab\tab 128 (10000000)\par
+a\tab\tab 97\tab 162 (10100010)\tab\tab 1\tab\tab 170 (10101010)\par
+v\tab\tab 118\tab 156 (10011100)\tab\tab 6\tab\tab 148  (10010100)\par
+\par
+Don\rquote t forget that the password ends with a length byte, that, for the Spanish civilization with password \lquote yaroslav\rquote  (8 characters length), is 89h (in hexadecimal; in decimal it is 137) \par
+\par
+So, putting all in hexadecimal value, you should see that \ldblquote string\rdblquote  of bytes for the password yaroslav as yellow civilization:\par
+\lang1040 FA  DA  CC  E6  AE  80  AA  94  89\par
+\lang2057 y    a    r     o    s    l    a    v   END\tab    \par
+\par
+\par
+
+\pard\nowidctlpar\par
+
+\pard\keepn\nowidctlpar\s1\sb240\sa60\kerning28\fs28 10. EVENTS\par
+
+\pard\nowidctlpar\kerning0\fs20\par
+1-4\tab "EVNT"\par
+5-6\tab number of events\par
+\par
+298 bytes for each of the events:\par
+1-4\tab event trigger number:\par
+\tab\b dec\tab trigger\b0\par
+\tab 1\tab UnitKilled\par
+\tab 2\tab CityTaken\par
+\tab 4\tab Turn\par
+\tab 8\tab TurnInterval\par
+\tab 16\tab Negotiation\par
+\tab 32\tab ScenarioLoaded\par
+\tab 64\tab RandomTurn\par
+\tab 128\tab NoSchism\par
+\tab 256\tab ReceivedTechnology\par
+5-8\tab\b bin (first 2 bytes)\tab dec\tab action\b0\par
+\tab .... ...1 .... ....\tab 1\tab Text\par
+\tab .... ..1. .... ....\tab 2\tab MoveUnit\par
+\tab .... .1.. .... ....\tab 4\tab CreateUnit\par
+\tab .... 1... .... ....\tab 8\tab ChangeMoney\par
+\tab ...1 .... .... ....\tab 16\tab PlayWaveFile\par
+\tab ..1. .... .... ....\tab 32\tab MakeAggression\par
+\tab .1.. .... .... ....\tab 64\tab JustOnce\par
+\tab 1... .... .... ....\tab 128\tab PlayCDTrack\par
+\tab .... .... .... ...1\tab 256\tab DontPlayWonders\par
+\tab .... .... .... ..1.\tab 512\tab ChangeTerrain\par
+\tab .... .... .... .1..\tab 1024\tab DestroyACivilization\par
+\tab .... .... .... 1...\tab 2048\tab ChangeTerrain\par
+(...)\par
+\par
+After the event structures:\par
+A string "table". All text values from the original events file pasted one after the other (each string terminated by a null character). The text values are:\par
+
+\pard{\pntext\f3\'B7\tab}{\*\pn\pnlvlblt\pnf3\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720 Text events, everything you put between \i TEXT\i0  and \i ENDTEXT\i0 ,\par
+{\pntext\f3\'B7\tab}All values you put after an = (equals sign), except numbers and the value for the \i veteran\i0  property.\par
+
+\pard{\*\pn\pnlvlcont\pnf3\pnindent0{\pntxtb\'B7}}\nowidctlpar\par
+Each line in a text event is saved as a separate null-terminated string.\par
+\i NOTE: It is possible to leave out the events.txt for a scenario, and add an EVNT section to the scenario file instead.\i0\par
+\par
+\cf1\par
+\par
+
+\pard{\*\pn\pnlvlcont\pnf3\pnindent0{\pntxtb\'B7}}\keepn\nowidctlpar\s1\sb240\sa60\cf0\kerning28\fs28 A. HOW TO HEX-EDIT\par
+
+\pard{\*\pn\pnlvlcont\pnf3\pnindent0{\pntxtb\'B7}}\nowidctlpar\kerning0\fs20\par
+
+\pard{\*\pn\pnlvlcont\pnf3\pnindent0{\pntxtb\'B7}}\nowidctlpar\qj There are a few things I would like to note about Hex Editing files:\par
+
+\pard{\pntext\f3\'B7\tab}{\*\pn\pnlvlblt\pnf3\pnindent360{\pntxtb\'B7}}\nowidctlpar\fi-360\li360\qj\tx360\b Integers are almost always stored in reverse. If 300 turns have passed (300 is 01 2C in hex), you should type it in as 2C 01 instead of 01 2C.\b0\par
+{\pntext\f3\'B7\tab}Binary values are often used as "flags", which can be toggled on or off. The way I have noted these in this document is eg ..1. \'85., which means that "." can be either 0 or 1, but has no influence on the actual flag which is meant. 1, of course, must be 1 for the flag to work.\par
+{\pntext\f3\'B7\tab}I have tried to give most numbers in Decimals for better understanding. However, some important offsets are still given in hex. They are either obvious to find or are noted.\par
+
+\pard{\*\pn\pnlvlcont\pnf3\pnindent0{\pntxtb\'B7}}\nowidctlpar\par
+
+\pard{\*\pn\pnlvlcont\pnf3\pnindent0{\pntxtb\'B7}}\nowidctlpar\qj There are many hex editors available. Here are two to get you started:\par
+
+\pard{\pntext\f3\'B7\tab}{\*\pn\pnlvlblt\pnf3\pnindent360{\pntxtb\'B7}}\nowidctlpar\fi-360\li360\qj\tx360 Hex Workshop, {\cf2\ul{\field{\*\fldinst{HYPERLINK http://www.bpsoft.com }}{\fldrslt{http://www.bpsoft.com}}}}\f0\fs20  with many good options, including a very useful hexadecimal-decimal converter and a hexadecimal calculator. The program is \i shareware\i0 .\par
+{\pntext\f3\'B7\tab}A.X.E., {\cf2\ul{\field{\*\fldinst{HYPERLINK http://www.jbrowse.com/products/axe }}{\fldrslt{http://www.jbrowse.com/products/axe}}}}\f0\fs20 . A hex editor with a very useful graphical viewing option. The latest version is no longer free. Version 2.1 was the last free version.\par
+
+\pard{\*\pn\pnlvlcont\pnf3\pnindent0{\pntxtb\'B7}}\nowidctlpar\par
+
+\pard{\*\pn\pnlvlcont\pnf3\pnindent0{\pntxtb\'B7}}\nowidctlpar\qj Another major use for hex-editing not eleborated on in here is for extracting GIF images from DLL\rquote s. The program usually used for this and especially created for it is GifX by Rune Berge. However there are other resource extracting programs not specifically for CivII that do a similar job, and can even be better than GifX.\par
+
+\pard{\pntext\f3\'B7\tab}{\*\pn\pnlvlblt\pnf3\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\b GifX\b0  by Rune Berge. Downloadable at every good civ2 scenario site.\par
+{\pntext\f3\'B7\tab}\b Resource Hacker\b0  or \b ResHacker\b0  by Angus Johnson. This program allows editing of most 32bit resource files, among others the Civ2.exe file (to extract some funny things) and all civ2 DLL files. However, it only allows editing of 32bit files. Civ2 was written in 16bit (Windows 3.1), so these cannot be edited. Multiplayer Gold (MGE) was rewritten as 32bit, and these files can be edited. The program is \b free\b0  and can be downloaded here: {\cf2\ul{\field{\*\fldinst{HYPERLINK http://rpi.net.au/~ajohnson/resourcehacker/ }}{\fldrslt{http://rpi.net.au/~ajohnson/resourcehacker/}}}}\f0\fs20\par
+{\pntext\f3\'B7\tab}\b Exescope\b0  by Toshifumi Yamamoto. This program is NOT free. This program essentially does the same as ResHacker, but also allows the editing of 16bit files, so all versions of civ2. The main advantage with editing DLL\rquote s over GifX is that this program allows file sizes to be changed, so you don\rquote t have to worry anymore about your edited picture being larger in size than the original.\par
+
+\pard{\*\pn\pnlvlcont\pnf3\pnindent0{\pntxtb\'B7}}\nowidctlpar\li710 Download it here: {\cf2\ul{\field{\*\fldinst{HYPERLINK http://www.vector.co.jp/authors/VA003525/ }}{\fldrslt{http://www.vector.co.jp/authors/VA003525/}}}}\f0\fs20  (and click on \i English\i0 ).\par
+
+\pard\nowidctlpar\b\par
+\par
+\par
+
+\pard\keepn\nowidctlpar\s1\sb240\sa60\kerning28\b0\fs28 B. VERSION HISTORY\par
+
+\pard\nowidctlpar\kerning0\b\fs20\par
+
+\pard\nowidctlpar\fi-2520\li2880 1.8\b0  (16 April 2005)\tab Several minor changes in layout and spelling corrections.\b\par
+
+\pard{\*\pn\pnlvlcont\pnf3\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-2520\li2880 1.7\b0  (13 March 2005)\tab Lots of additions and changes and plenty of reformatting. The most important ones are the addition of the passwords and events. The former section 3 "Wonders" has been merged into section 2. I removed all credits throughout the document and stuck them all in the Credits at the end. If people really think it's necessary I can put it back...\par
+
+\pard\nowidctlpar\fi-2520\li2880\b 1.6 \b0 (22 May 2002)\tab Lots of additions, changes and extra info. More tips on programs for resource editing in DLL and EXE files. Replaced the whole chapter on map editing with Jorrit\rquote s guide on map editing.\par
+\b 1.5 \b0 (27 August 2000)\tab Some minor additions.\f1\par
+\b\f0 1.4 \b0 (13 August 2000)\tab Added Jorrit Vermeiren\rquote s part about maps. Reformatted the whole text to Word. Added leader titles, total number of units and cities in game, cities to pick in CITIES.TXT.\par
+\b 1.3\b0  (20\super  \nosupersub June 2000)\tab Added the Wonders section.\par
+\b 1.2\b0  (26 May 2000)\tab Added some unimportant info, pollution info,\par
+\tab\tab\tab\tab more info about Technologies and Money and\par
+\tab\tab\tab\tab some zoom factors.\par
+\b 1.1\b0  (15 May 2000)\tab Added cursor coordinates, the Save Game layout\par
+\tab\tab\tab\tab some game versions, Tribes info, Technologies\par
+\tab\tab\tab\tab and Money info.\par
+\b 1.0\b0  (5\super  \nosupersub May 2000)\tab\tab Original version.\par
+
+\pard\nowidctlpar\b\par
+\par
+\par
+
+\pard{\*\pn\pnlvlcont\pnf3\pnindent0{\pntxtb\'B7}}\keepn\nowidctlpar\s1\sb240\sa60\kerning28\b0\fs28 C. CREDITS\par
+
+\pard{\*\pn\pnlvlcont\pnf3\pnindent0{\pntxtb\'B7}}\nowidctlpar\kerning0\b\fs20\par
+
+\pard{\*\pn\pnlvlcont\pnf3\pnindent0{\pntxtb\'B7}}\nowidctlpar\li360\b0 The people who contributed to this document are, in alphabetical order:\par
+
+\pard{\*\pn\pnlvlcont\pnf3\pnindent0{\pntxtb\'B7}}\nowidctlpar\li720 "AGRICOLA"\par
+
+\pard\nowidctlpar\li720 "Captain Nemo"\par
+Paul "Kull" Cullivan\par
+Carl "Gothmog" Fritz\par
+Allard H\'f6felt (the original writer of this document)\par
+Andrew Livings\par
+Javier "yaroslav" Mu\'f1oz Kirschberg\par
+James Dustin "Dusty" Reichwein\par
+Angelo Scotto\par
+"SlowThinker"\par
+Harlan Thompson\par
+Xin Yu\par
+Jorrit "Mercator" Vermeiren (editor since version 1.7)\par
+
+\pard\nowidctlpar\li360\par
+Thank you to all people who have contributed by asking valuable questions and by this way finding more out.\par
+\f2\lang1043\par
+}
+ 
